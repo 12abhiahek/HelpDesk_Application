@@ -1,0 +1,55 @@
+#spring:
+#  application:
+#    name: HelpDeskApplication
+#
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/help_desk
+#    username: root
+#    password: abhi@18
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        dialect: org.hibernate.dialect.MySQL8Dialect
+#
+#
+#
+#server:
+#  port: 8080
+
+
+spring:
+  application:
+    name: HelpDeskApplication
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/help_desk
+    username: root
+    password: abhi@18
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  ai:
+    openai:
+      api-key: ${GROQ_API_KEY}
+      base-url: https://api.groq.com/openai
+      chat:
+        options:
+          model: llama3-70b-8192
+          temperature: 0.7
+
+server:
+  port: 8080
