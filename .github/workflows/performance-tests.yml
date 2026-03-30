@@ -1,0 +1,46 @@
+name: Performance Testing
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * 0'  # Weekly performance tests
+
+jobs:
+  performance:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Build Project
+      run: mvn clean package -DskipTests
+
+    - name: Run Performance Tests
+      run: |
+        echo "Running performance tests..."
+        mvn test -Pperformance 2>&1 | tee performance-results.log
+      continue-on-error: true
+
+    - name: Upload Performance Results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: performance-results
+        path: performance-results.log
+
+    - name: Analyze Results
+      if: always()
+      run: |
+        if grep -q "FAILED" performance-results.log; then
+          echo "Performance test failed"
+          exit 1
+        fi
+      continue-on-error: true
+
